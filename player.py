@@ -10,7 +10,7 @@ class Player(pygame.sprite.Sprite):
         self.health = 100
         self.speed = 4
         
-        self.originalImage = pygame.image.load("pildid/Player3.png").convert() #et iga frame pöörata algsset pilti
+        self.originalImage = pygame.image.load("pildid/Player.png").convert() #et iga frame pöörata algsset pilti
         self.image = self.originalImage
         #taust läbipaistvaks
         self.image.set_colorkey((255, 255, 255), pygame.RLEACCEL)

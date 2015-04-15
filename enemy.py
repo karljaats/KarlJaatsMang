@@ -4,7 +4,7 @@ from player import *
 class Enemy(pygame.sprite.Sprite):
     def __init__(self, x, y):
         super().__init__() #sprite klasssi seadistamine
-        self.originalImage = pygame.image.load("pildid/Enemy2.png").convert() #algse pildi keeramiseks
+        self.originalImage = pygame.image.load("pildid/Enemy.png").convert() #algse pildi keeramiseks
         self.image = self.originalImage
         self.image.set_colorkey((255, 255, 255), pygame.RLEACCEL)#taust läbipaistev
         self.rect = self.originalImage.get_rect()

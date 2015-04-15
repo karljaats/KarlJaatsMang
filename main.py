@@ -44,7 +44,7 @@ def game(width, heigth, screen):
     ("#","S",".","#",".",".",".",".",".",".",".",".",".",".","#",".",".",".","S","#"),
     ("#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#"),]
 
-    screen.fill((180, 120, 80))
+    screen.fill((30, 200, 35))
 
     #Sprite gruppid
     wall_list = pygame.sprite.Group()
@@ -77,12 +77,14 @@ def game(width, heigth, screen):
     dup = 0
     ddown = 0
     kills = 0
-    texthealth = font.render("Health: " + str(player.health), False, (0, 0, 0))
-    textkills = font.render("Kills: " + str(kills), False, (0, 0, 0))
+    healthback = pygame.image.load("pildid/healthback.png").convert()
+    killsback = pygame.image.load("pildid/killsback.png").convert()
+    texthealth = font.render("Health: " + str(player.health), True, (0, 0, 0))
+    textkills = font.render("Kills: " + str(kills), True, (0, 0, 0))
 
     gameover = False
     pygame.time.set_timer(pygame.USEREVENT, 4000) #event mis käivitub iga 4 sekundi tagant
-    while not gameover: #main loop
+    while not gameover and not done: #main loop
         for event in pygame.event.get():
             #mängu errorita lõpetamiseks
             if event.type == pygame.QUIT:
@@ -157,7 +159,7 @@ def game(width, heigth, screen):
         #pildi pööramine
         player.rotateImage()
 
-        screen.fill((180, 120, 80))
+        screen.fill((30, 200, 35))
         #kuulide asukoha muutmine
         bullet_list.update()
         
@@ -173,7 +175,7 @@ def game(width, heigth, screen):
                 enemy.kill()
                 #kill count update
                 kills += 1
-                textkills = font.render("Kills: " + str(kills), False, (0, 0, 0))
+                textkills = font.render("Kills: " + str(kills), True, (0, 0, 0))
             else:
                 colenemy_list.add(collisionEnemy)#gruppi lisamine. Alati on grupis ainult üks liige
             #kui vaenlane jõuab mängijani
@@ -181,7 +183,7 @@ def game(width, heigth, screen):
                 enemy.kill()
                 #health update
                 player.health -= 20
-                texthealth = font.render("Health: " + str(player.health), False, (0, 0, 0))
+                texthealth = font.render("Health: " + str(player.health), True, (0, 0, 0))
 
         #kustutab seinu tabanud kuulid
         for wall in wall_list:
@@ -200,18 +202,48 @@ def game(width, heigth, screen):
         Clock.tick(60)#mõõdab fps-i ja piirab selle 60-le
 
         #nubrid ekraanile
-        textfps = font.render(str(round(Clock.get_fps())), False, (0, 0, 0))
-        screen.blit(textfps, (width-60, 5))
+        textfps = font.render(str(round(Clock.get_fps())), True, (0, 0, 0))
+        screen.blit(textfps, (5, heigth-35))
+        screen.blit(healthback, (0, 0))
         screen.blit(texthealth, (5, 5))
-        screen.blit(textkills, (5, heigth-35))
+        screen.blit(killsback, (width-120, 0))
+        screen.blit(textkills, (width-110, 5))
 
         pygame.display.flip()
 
+def instructions(screen):
+    global done
+    font = pygame.font.SysFont("Calibri", 24)
+    texts = ["The aim of the game is to kill as many baddies as you can before you die.",
+             "",
+             "You can move around using WASD or the arrow keys.",
+             "Click to shoot and when you die you can restart by pressing SPACE.",
+             "",
+             "",
+             "Press any key to continue..."]
+    screen.fill((0, 0, 0))
+    index = 0
+    for text in texts:
+        text = font.render(text, True, (255, 255, 255))
+        screen.blit(text, (10, index*20+60))
+        index += 1
+    
+    pressed = False
+    while not done and not pressed:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                done = True
+            elif event.type == pygame.KEYDOWN:
+                pressed = True
+                
+        pygame.display.flip()
 
 #tegelik mängu väljakutsumine
 done = False
 gameoverfont = pygame.font.SysFont("Calibri", 60)
-textgameover = gameoverfont.render("You died...", False, (0, 0, 0))
+textgameover = gameoverfont.render("You died...", True, (0, 0, 0))
+deadback = pygame.image.load("pildid/deadback.png").convert()
+instructions(screen)
 game(width, heigth, screen)
 while not done:
     for event in pygame.event.get():
@@ -222,6 +254,7 @@ while not done:
             if event.key == pygame.K_SPACE:
                 game(width, heigth, screen)
     if not done: #et kui veel elus olles pannakse mäng kinni, ei kuvataks enne sulgumist surma teadet
+        screen.blit(deadback, (width/2-135, heigth/2-45))
         screen.blit(textgameover, (width/2-120, heigth/2-30))
     pygame.display.flip()
         
