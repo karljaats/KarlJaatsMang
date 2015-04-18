@@ -23,23 +23,21 @@ class Enemy(pygame.sprite.Sprite):
         #I veerand
         if x < 0 and y >= 0:
             x = x*(-1)
-            self.angle = round(asin(x/c) * (180/pi) * (-1))
+            self.angle = round(asin(x/c) * (180/pi))
         #II veerand
         elif x <= 0 and y < 0:
-            x = x*(-1)
             y = y*(-1)
-            self.angle = round((90 + (asin(y/c) * (180/pi))) * (-1))
+            self.angle = round((90 + (asin(y/c) * (180/pi))))
         #III veerand
         elif x >= 0 and y < 0:
-            y = y*(-1)
-            self.angle = round((180 + (asin(x/c) * (180/pi))) * (-1))
+            self.angle = round((180 + (asin(x/c) * (180/pi))))
         #IV veerand
         elif x > 0 and y >= 0:
-            self.angle = round((270 + (asin(y/c) * (180/pi))) * (-1))
+            self.angle = round((270 + (asin(y/c) * (180/pi))))
 
         #pildi pööramine keskkoha ümber
         oldCenter = self.rect.center
-        self.image = pygame.transform.rotate(self.originalImage, self.angle)
+        self.image = pygame.transform.rotate(self.originalImage, -self.angle)
         self.rect = self.image.get_rect(center=oldCenter)
         
     def update(self, wall_list):#update - vaenlaste liikumine ja seinte kontroll
@@ -49,66 +47,20 @@ class Enemy(pygame.sprite.Sprite):
         #arvutab vajaliku kauguse, mis sel framil liikuda x ja y suunas
         #muudab collision klassi asukohta ja kontrollib seintega kattuvust
         #kui kattuvus puudub muudab päris klassi asukohta
-        #I veerand
-        if self.angle <= 90:
-            muut = sin(radians(self.angle))*self.speed
-            collisionEnemy.rect.x += muut+self.x%1
-            if pygame.sprite.spritecollide(collisionEnemy, wall_list, False) == []:
-                self.x += muut
-            else:
-                collisionEnemy.rect.x -= muut+self.x%1
-                
-            muut = cos(radians(self.angle))*self.speed
-            collisionEnemy.rect.y -= muut+self.y%1
-            if pygame.sprite.spritecollide(collisionEnemy, wall_list, False) == []:
-                self.y -= muut
-            else:
-                collisionEnemy.rect.y += muut+self.y%1
-        #II veerand
-        elif self.angle <= 180:
-            muut = cos(radians(self.angle-90))*self.speed
-            collisionEnemy.rect.x += muut+self.x%1
-            if pygame.sprite.spritecollide(collisionEnemy, wall_list, False) == []:
-                self.x += muut
-            else:
-                collisionEnemy.rect.x -= muut+self.x%1
-
-            muut = sin(radians(self.angle-90))*self.speed
-            collisionEnemy.rect.y += muut+self.y%1
-            if pygame.sprite.spritecollide(collisionEnemy, wall_list, False) == []:
-                self.y += muut
-            else:
-                collisionEnemy.rect.y -= muut+self.y%1
-        #III veerand
-        elif self.angle <= 270:
-            muut = sin(radians(self.angle-180))*self.speed
+        muut = sin(radians(self.angle))*self.speed
+        collisionEnemy.rect.x += muut+self.x%1
+        if pygame.sprite.spritecollide(collisionEnemy, wall_list, False) == []:
+            self.x += muut
+        else:
             collisionEnemy.rect.x -= muut+self.x%1
-            if pygame.sprite.spritecollide(collisionEnemy, wall_list, False) == []:
-                self.x -= muut
-            else:
-                collisionEnemy.rect.x += muut+self.x%1
                 
-            muut = cos(radians(self.angle-180))*self.speed
+        muut = cos(radians(self.angle))*self.speed
+        collisionEnemy.rect.y -= muut+self.y%1
+        if pygame.sprite.spritecollide(collisionEnemy, wall_list, False) == []:
+            self.y -= muut
+        else:
             collisionEnemy.rect.y += muut+self.y%1
-            if pygame.sprite.spritecollide(collisionEnemy, wall_list, False) == []:
-                self.y += muut
-            else:
-                collisionEnemy.rect.y -= muut+self.y%1
-        #IV veerand
-        elif self.angle <= 360:
-            muut = cos(radians(self.angle-270))*self.speed
-            collisionEnemy.rect.x -= muut+self.x%1
-            if pygame.sprite.spritecollide(collisionEnemy, wall_list, False) == []:
-                self.x -= muut
-            else:
-                collisionEnemy.rect.x += muut+self.x%1
 
-            muut = sin(radians(self.angle-270))*self.speed
-            collisionEnemy.rect.y -= muut+self.y%1
-            if pygame.sprite.spritecollide(collisionEnemy, wall_list, False) == []:
-                self.y -= muut
-            else:
-                collisionEnemy.rect.y += muut+self.y%1
         self.rect.x = self.x
         self.rect.y = self.y
         

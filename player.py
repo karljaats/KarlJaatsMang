@@ -28,23 +28,21 @@ class Player(pygame.sprite.Sprite):
         #I veerand
         if x < 0 and y >= 0:
             x = x*(-1)
-            self.angle = round(asin(x/c) * (180/pi) * (-1))
+            self.angle = round(asin(x/c) * (180/pi))
         #II veerand
         elif x <= 0 and y < 0:
-            x = x*(-1)
             y = y*(-1)
-            self.angle = round((90 + (asin(y/c) * (180/pi))) * (-1))
+            self.angle = round((90 + (asin(y/c) * (180/pi))))
         #III veerand
         elif x >= 0 and y < 0:
-            y = y*(-1)
-            self.angle = round((180 + (asin(x/c) * (180/pi))) * (-1))
+            self.angle = round((180 + (asin(x/c) * (180/pi))))
         #IV veerand
         elif x > 0 and y >= 0:
-            self.angle = round((270 + (asin(y/c) * (180/pi))) * (-1))
+            self.angle = round((270 + (asin(y/c) * (180/pi))))
             
     def rotateImage(self): #pildi enda pööramine jättes pildi keskkoha paika
         oldCenter = self.rect.center
-        self.image = pygame.transform.rotate(self.originalImage, self.angle)
+        self.image = pygame.transform.rotate(self.originalImage, -self.angle)
         self.rect = self.image.get_rect(center=oldCenter)
 
 #collisionite tegemiseks
