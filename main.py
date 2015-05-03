@@ -83,7 +83,7 @@ def game(width, heigth, screen):
     textkills = font.render("Kills: " + str(kills), True, (0, 0, 0))
 
     gameover = False
-    pygame.time.set_timer(pygame.USEREVENT, 4000) #event mis käivitub iga 4 sekundi tagant
+    pygame.time.set_timer(pygame.USEREVENT, 2500) #event mis käivitub iga 4 sekundi tagant
     while not gameover and not done: #main loop
         for event in pygame.event.get():
             #mängu errorita lõpetamiseks

@@ -9,7 +9,7 @@ class Enemy(pygame.sprite.Sprite):
         self.image.set_colorkey((255, 255, 255), pygame.RLEACCEL)#taust läbipaistev
         self.rect = self.originalImage.get_rect()
         self.angle = 0
-        self.speed = 2
+        self.speed = 3
         #mittetäisarvuliseks asukoha säilitamiseks
         self.x = x
         self.y = y
